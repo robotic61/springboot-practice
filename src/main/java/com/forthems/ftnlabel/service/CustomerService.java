@@ -183,6 +183,7 @@ public class CustomerService {
 
         return customerRepository.save(existing);
         // Save → UPDATE happens
+        // .save returns Customer
     }
 
     /*

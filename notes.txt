@@ -54,16 +54,17 @@ Spring Boot (JPA) will create tables from your class with @Entity
 4. Create Service
 
 FULL cycle:
+🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
 JSON → (setters) → Object → (getters) → Database
 Database → (setters) → Object → (getters) → JSON
-
-When findAll() runs, Spring uses setters to fill the object with data from each row
-Then Objects in the list are converted to JSON using getters.
 
 Setters → fill object
 Getters → read object
 save() → uses getters
 find() → uses setters
+🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+When findAll() runs, Spring uses setters to fill the object with data from each row
+Then Objects in the list are converted to JSON using getters.
 
 Spring uses getters to read the data from your object when saving to the database
 
@@ -71,3 +72,13 @@ save() → add row
 findAll() → get all
 findById() → get one
 deleteById() → remove one
+
+5. Create controller
+
+    Example: @DeleteMapping("/customers/{id}")
+    “whether we delete or not is up to the service right?” YES
+    HTTP method = request intention
+    Service = actual behavior / decision
+
+    HTTP method ≠ actual action
+    Service logic = actual action
