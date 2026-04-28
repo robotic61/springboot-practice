@@ -1,0 +1,43 @@
+Backend order(Spring Boot)
+1. Database (create DB)
+2. Model (Entity)
+3. Repository
+4. Service
+5. Controller
+6. Test (Hoppscotch)
+
+Storage → Structure → Access → Logic → API
+DB → Entity → Repo → Service → Controller
+
+1. Database
+
+Create a new database(for project):
+mysql command:
+mysql -u root -p
+enter
+CREATE DATABASE first_springboot;
+SHOW DATABASES;
+USE first_springboot;
+SHOW TABLES;
+
+Then:
+Spring Boot (JPA) will create tables from your @Entity
+
+spring.jpa.hibernate.ddl-auto=update
+Spring Boot checks your Entity.
+If table does not exist, create it.
+If fields change, update table.
+
+spring.jpa.show-sql=true -> prints SQL queries in console
+spring.jpa.properties.hibernate.format_sql=true -> make it readable
+
+Add MySQL driver in pom.xml:
+
+JPA = brain 🧠 (knows how to talk to DB)
+Driver = cable 🔌 (actual connection)
+
+<dependency>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+    <scope>runtime</scope>
+</dependency>
