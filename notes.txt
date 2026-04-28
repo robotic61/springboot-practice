@@ -11,7 +11,7 @@ DB → Entity → Repo → Service → Controller
 
 1. Database
 
-Create a new database(for project):
+1)Create a new database(for project):
 mysql command:
 mysql -u root -p
 enter
@@ -20,9 +20,12 @@ SHOW DATABASES;
 USE first_springboot;
 SHOW TABLES;
 
+this creates database with NO TABLE.
+
 Then:
 Spring Boot (JPA) will create tables from your @Entity
 
+2) configure the application.properties to include the database details
 spring.jpa.hibernate.ddl-auto=update
 Spring Boot checks your Entity.
 If table does not exist, create it.
@@ -31,7 +34,7 @@ If fields change, update table.
 spring.jpa.show-sql=true -> prints SQL queries in console
 spring.jpa.properties.hibernate.format_sql=true -> make it readable
 
-Add MySQL driver in pom.xml:
+3) Add MySQL driver in pom.xml:
 
 JPA = brain 🧠 (knows how to talk to DB)
 Driver = cable 🔌 (actual connection)
@@ -41,3 +44,11 @@ Driver = cable 🔌 (actual connection)
     <artifactId>mysql-connector-j</artifactId>
     <scope>runtime</scope>
 </dependency>
+
+2. Create model
+
+Spring Boot (JPA) will create tables from your class with @Entity
+
+3. Create repository
+
+4.
