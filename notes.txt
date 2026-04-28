@@ -51,4 +51,21 @@ Spring Boot (JPA) will create tables from your class with @Entity
 
 3. Create repository
 
-4.
+4. Create Service
+
+FULL cycle:
+JSON → (setters) → Object → (getters) → Database
+Database → (setters) → Object → (getters) → JSON
+
+Setters → fill object
+Getters → read object
+save() → uses getters
+find() → uses setters
+
+Spring uses getters to read the data from your object when saving to the database
+
+
+save() → add row
+findAll() → get all
+findById() → get one
+deleteById() → remove one
