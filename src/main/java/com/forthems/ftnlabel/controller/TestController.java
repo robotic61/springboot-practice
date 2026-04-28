@@ -14,6 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
+    /*
+    Singleton (shared):
+    - Controller (handles all requests)
+    - Service (same logic reused)
+
+    Per request (new):
+    - User object (data is different per request)
+    - Request data
+     */
+
     private final UserService userService;
     // This creates a variable to store the service.
     // final cuz only set it once and never changed.
@@ -22,7 +32,7 @@ public class TestController {
         // Spring does this behind the scenes:
         // UserService service = new UserService();
         //TestController controller = new TestController(service);
-        // Spring creates object → passes into constructor → you use it
+        // Spring creates an object → passes into constructor → you use it
         /*
         Any Spring-managed class
 
@@ -59,6 +69,9 @@ public class TestController {
 
     @PostMapping(path = "/user")
     public User createUser(@RequestBody User user) {
+        // @RequestBody → tells Spring to convert JSON into a Java object
+        // Creates the object
+        // fills fields using setters
         return userService.createUser(user);
     }
 
