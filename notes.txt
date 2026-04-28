@@ -82,3 +82,23 @@ deleteById() → remove one
 
     HTTP method ≠ actual action
     Service logic = actual action
+
+
+Mastered:
+✔ Controller → Service → Repository flow
+✔ CRUD operations
+✔ JSON ↔ Object mapping
+✔ JPA basics
+✔ HTTP methods (GET, POST, PUT, DELETE)
+✔ Path variables & request body
+
+What I might need to know:
+❗ DTO (very important)
+❗ Validation (input checking)
+❗ Error handling (proper responses)
+❗ Relationships (OneToMany, etc.)
+❗ Security (login, auth)
+
+Foundation → Start project → Learn missing pieces
+Now learn the rest by building
+I now have enough foundation to start a real project
