@@ -2,6 +2,7 @@ package com.forthems.ftnlabel.service;
 
 import com.forthems.ftnlabel.model.Customer;
 import com.forthems.ftnlabel.repository.CustomerRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -209,6 +210,47 @@ public class CustomerService {
     → Service updates object using setters
     → save() called
     → Database row updated
+     */
+
+    public List<Customer> searchNameContaining(String word) {
+        return customerRepository.findByNameContaining(word);
+    }
+
+    public List<Customer> searchNameStartingWith(String word) {
+        return customerRepository.findByNameStartingWith(word);
+    }
+
+    public List<Customer> searchNameEndingWith(String word) {
+        return customerRepository.findByNameEndingWith(word);
+    }
+
+    public List<Customer> searchNameContainingAndEmailContaining(String name, String email) {
+        return customerRepository.findByNameContainingAndEmailContaining(name, email);
+    }
+
+    @Transactional
+    public void deleteByName(String name) {
+        customerRepository.deleteByName(name);
+    }
+
+    @Transactional
+    public void deleteByNameContaining(String word) {
+        customerRepository.deleteByNameContaining(word);
+    }
+
+    @Transactional
+    public void deleteByEmail(String email) {
+        customerRepository.deleteByEmail(email);
+    }
+
+    /*
+    ✔ All are custom delete queries
+    ✔ They need a transaction
+    ✔ @Transactional ensures DB changes are committed
+
+    ✔ @Transactional ensures your DB operations run safely
+    ✔ It commits if success, rolls back if failure
+    ✔ Required for custom update/delete operations
      */
 
 

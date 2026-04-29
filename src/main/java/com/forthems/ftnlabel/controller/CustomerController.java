@@ -199,6 +199,41 @@ public class CustomerController {
 //        return customerService.updateCustomer(id, customer);
 //        // update at id from the path variable
 //    }
+
+    @GetMapping("/customers/searchnamecontaining")
+    public List<Customer> searchNameContaining(@RequestParam String word) {
+        return customerService.searchNameContaining(word);
+    }
+   //  for GET can use @RequestParam
+
+//    // Example:
+//    // GET http://localhost:8080/customers/searchnamecontaining?word=mm
+//    // ?word=mm → "mm"
+//    // word = "mm"
+
+//    @GetMapping("/customers/namecontains") // POST or GET?
+//    public List<Customer> searchNameContaining(@RequestBody Customer customer) {
+//        return customerService.searchNameContaining(customer.getName());
+//    } // Or change to POST, but the intention is not satisfied
+//    // or wants to avoid url encoding characters, when we need to use special characters, like space(%20) or !
+
+    @GetMapping("/customers/namestarts")
+    public List<Customer> searchNameStartingWith(@RequestBody Customer customer) {
+        return customerService.searchNameStartingWith(customer.getName());
+    }
+
+    @DeleteMapping("/customers/deletebyname")
+    public void deleteByName(@RequestParam String word) {
+        customerService.deleteByName(word);
+    }
+
+    /*
+    | Method           | Type           | Transaction               |
+    | ---------------- | -------------- | ------------------------- |
+    | `deleteById()`   | built-in       | ✔ already handled         |
+    | `deleteByName()` | derived/custom | ❗ may need @Transactional |
+
+     */
 }
 
 
@@ -207,5 +242,5 @@ public class CustomerController {
 Now:
 1. create custom sql example: (select name from customer where name like "%mm%")
 % = anything, mm = substring
-2. create custom sql inside repository as a method
+2. create custom sql inside the repository as a method
  */

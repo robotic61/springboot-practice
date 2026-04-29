@@ -106,6 +106,39 @@ I now have enough foundations to start a real project
 
 6. Custom sql query
 
+Method naming = always gives full entity
+
+Basic structure
+Prefix + By + Field(s) + Condition(s) + (OrderBy...)
+
+Example:
+findByNameContaining(String keyword)
+
+Field rules
+✔ Must match entity field name exactly
+✔ Use CamelCase
+
+Method uses PascalCase (Name, Email)
+Entity uses camelCase (name, email)
+
+Example:
+private String email;
+findByEmail(...)
+
+Example:
+private String firstName;
+findByFirstName(...)
+
+Common prefixes:
+findBy     → get data
+getBy      → same as findBy
+readBy     → same
+countBy    → return count
+existsBy   → return true/false
+deleteBy   → delete rows
+
+
+
 ✔ You define method name in repository interface
 ✔ Spring reads the method name
 ✔ Spring generates a query (JPQL/SQL)
@@ -119,6 +152,7 @@ findBy + Name + Containing
 Spring builds JPQL(object-based query):
 SELECT c FROM Customer c WHERE c.name LIKE %:keyword%
 Since here Customer is still Java class(not table name).
+and c.name to access the object name.
 
 → Hibernate converts JPQL → SQL
 
@@ -126,6 +160,52 @@ SELECT * FROM customer WHERE name LIKE '%mm%';
 
 Method name → JPQL → SQL → result
 
+✔ Method name MUST match entity fields
+✔ Parameter name does NOT matter
+✔ Parameter type MUST match the field type
+✔ Parameter order matters
+
 My Repository will now have the method
 
+If the method name feels like a sentence → OK(use method naming)
+If it feels like a paragraph → use @Query
+or database specific features use @Query
 
+
+Method naming = 80%
+@Query = 20%
+
+Switch to @Query when:
+✔ Method name is too long
+✔ Logic is complex
+✔ You need joins / aggregation
+✔ You want specific fields only
+✔ You need full control over SQL
+
+
+✔ Yes — List<Customer> always works
+✔ It is the safest default if you are unsure
+
+List<Customer> findByEmail(String email);
+
+0 results → empty list ✔
+1 result  → list with 1 item ✔
+many      → list with many ✔
+
+Next:
+1. method naming test
+2. testing hoppscoth and database
+3. show to supervisor then mayne still need custom sql?
+4. maybe learn custom sql query
+
+
+Annotation
+
+| Annotation      | Gets data from            |
+| --------------- | ------------------------- |
+| `@RequestParam` | URL query (`?word=mm`)    |
+| `@PathVariable` | URL path (`/customers/1`) |
+| `@RequestBody`  | JSON body                 |
+
+
+@RequestParam = value from ?key=value in URL

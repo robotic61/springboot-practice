@@ -32,6 +32,8 @@ Spring builds the real class for you
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     List<Customer> findByNameContaining(String word); // Find name containing "mm" like "%mm%"
+    // or List<Customer> findByNameLike(String pattern)
+    // SELECT * FROM customer WHERE name LIKE '%mm%';
 
     List<Customer> findByNameStartingWith(String word);  // Find name starting with "word"
 
@@ -40,6 +42,48 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     List<Customer> findByNameContainingAndEmailContaining(String name, String email);
     // Combine conditions
     // Find name containing "name" amd email containing "email".
+
+    List<Customer> findByIdEqualsAndNameContainingOrEmailContaining(Long id, String name, String email);
+    // what if we want NameContainingOrEmailContaining then and findByIdEquals
+    // or we want bracket () wants to do what first? A and (B or C), can just put (B or C) in front but...
+    // what if we work with more than one table and connect them, like needing to use JOIN.
+    // or we need COUNT, distinct
+    // Use @Query = custom query
+    // try simple queries
+    // but real work: complex queries
+
+    /*
+    SELECT *
+    FROM customer
+    WHERE name LIKE ? AND email LIKE ?;
+
+    findByNameContainingAndEmailContaining("mm", "gmail");
+
+    SELECT *
+    FROM customer
+    WHERE name LIKE '%mm%' AND email LIKE '%gmail%';
+     */
+
+    List<Customer> findByNameAndEmail(String name, String email);
+    /*
+    SELECT * FROM customer
+    WHERE name = ? AND email = ?;
+
+    findByNameAndEmail("Temmy", "temmy@gmail.com");
+    SELECT * FROM customer
+    WHERE name = "Temmy" AND email = "temmy@gmail.com"
+     */
+
+    void deleteByName(String name);
+    // DELETE FROM customer WHERE name = ?;
+    // Deletes ALL customers where name = given value
+
+    void deleteByNameContaining(String word);
+    // DELETE FROM customer WHERE name LIKE '%keyword%';
+
+    void deleteByEmail(String email);
+
+
 }
     // JpaRepository<Entity, IdType>
     // this repository works with the Customer table and
