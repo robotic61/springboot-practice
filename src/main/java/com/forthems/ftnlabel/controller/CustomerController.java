@@ -38,10 +38,40 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping("/customers")
+    // Spring doesn’t just create objects — it MANAGES and injects them,
+    // so here Spring injects customerService object by spring creating the object AND spring managing them
+
+    @PostMapping("/customers/save")
+    // Handles both INSERT and UPDATE using repository.save()
+    // NO id in JSON body → INSERT new row
+    // HAVE id in JSON body and id exists and matches a row → UPDATE that row
+    // JPArepository handles the logic in the background
     public Customer createCustomer(@RequestBody Customer customer) {
         return customerService.saveCustomer(customer);
+        // handles both insert and update, send id = update, no id = insert
     }
+    /*
+    If input id does not exists for example:
+
+    {
+      "id": 1000,
+      "name": "saveTestUPDATEString2",
+      "email": "saveTesUPDATE100@gmail.com"
+    }
+
+    then ERROR!:
+    {
+      "timestamp": "2026-04-29T04:27:52.486Z",
+      "status": 500,
+      "error": "Internal Server Error",
+      "path": "/customers/save"
+    }
+
+    id = null → INSERT ✔
+    id exists → UPDATE ✔
+    id not exist → ERROR ❌
+
+     */
 
     @GetMapping("/customers")
     public List<Customer> getAllCustomers() {
@@ -87,14 +117,45 @@ public class CustomerController {
      */
 
 
-    @DeleteMapping("/customers/{id}")
-    public void deleteCustomer(@PathVariable Long id) {
-        customerService.deleteCustomer(id);
+    @DeleteMapping("/customers/delete")
+    // can be POST or DELETE method, since delete can also have a body.
+    // but should use delete cuz its clear that we are deleting.
+    public void deleteCustomer(@RequestBody Customer customer) {
+        customerService.deleteCustomer(customer.getId());
+        // 🔴dont write id in url path(it is not safe and can get attacked) so should change to get id from JSON field.
+        // only sends ID in JSON field.
+        // ❗ Prevent ID guessing (IDOR attacks)
+        // https encrypts(change to some hard to read format) JSON body
+        // HTTPS encrypts path + query + JSON body
+        // BUT URLs can still be exposed via logs/history
+        // so https still needs to hide sensitive url path details(to protects the connection)
+        // 🔥 REAL security solution
+        // ✔ Authentication (who are you)
+        // ✔ Authorization (what can you access)
         /*
         save() → read form (getter)
                 find() → fill form (setter)
                 delete() → just delete by ID (no objects)
                 DELETE FROM customer WHERE id = 3;
+         */
+
+        /*
+        Example:
+
+        {
+         "id": 5,
+        }
+
+        here other fields = null
+
+        {
+          "id": 5,
+          "email": "Yohan@gmail.com",
+          "name": "Yohan"
+        }
+
+        we only do cutomer.getid() on the object so other fields doesn't need to be input
+        , it just stays there inside the object.
          */
     }
     /*
@@ -133,8 +194,18 @@ public class CustomerController {
 
      */
 
-    @PutMapping("/customers/{id}")
-    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
-        return customerService.updateCustomer(id, customer);
-    }
+//    @PutMapping("/customers/{id}")
+//    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+//        return customerService.updateCustomer(id, customer);
+//        // update at id from the path variable
+//    }
 }
+
+
+
+/*
+Now:
+1. create custom sql example: (select name from customer where name like "%mm%")
+% = anything, mm = substring
+2. create custom sql inside repository as a method
+ */

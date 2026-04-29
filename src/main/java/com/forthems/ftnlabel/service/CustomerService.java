@@ -17,6 +17,10 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    // Spring doesn’t just create objects — it MANAGES and injects them,
+    // so here Spring injects customerRepository object by spring implementing the interface, then generating the object, then creates an object
+    // and MANAGE them
+
     public Customer saveCustomer(Customer customer) {
         return customerRepository.save(customer);
         // save RETURNS:
@@ -44,7 +48,7 @@ public class CustomerService {
         customer.setEmail("temmy@example.com");
         Then controller passes it to service.
 
-        return customerRepository.save(customer);
+        Return customerRepository.save(customer);
         Save this customer into the database.
         👉 It uses getters to read values
         Behind the scenes, Spring/JPA runs SQL similar to:
@@ -144,6 +148,7 @@ public class CustomerService {
         if (customerRepository.existsById(id)) {
             customerRepository.deleteById(id);
         }
+        // if id exits = delete, if not = do nothing
     }
 
     /*
@@ -169,6 +174,7 @@ public class CustomerService {
     DELETE FROM customer WHERE id = 2;
      */
 
+    // Unused cuz not use the same method for insert and update.
     public Customer updateCustomer(Long id, Customer newCustomer) {
         Customer existing = customerRepository.findById(id).orElse(null);
 
@@ -204,5 +210,7 @@ public class CustomerService {
     → save() called
     → Database row updated
      */
+
+
 
 }

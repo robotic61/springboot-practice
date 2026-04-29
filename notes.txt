@@ -57,6 +57,7 @@ FULL cycle:
 🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
 JSON → (setters) → Object → (getters) → Database
 Database → (setters) → Object → (getters) → JSON
+(Database got data from SQL command) then set values into object using Setters
 
 Setters → fill object
 Getters → read object
@@ -99,6 +100,32 @@ What I might need to know:
 ❗ Relationships (OneToMany, etc.)
 ❗ Security (login, auth)
 
-Foundation → Start project → Learn missing pieces
+Foundation → Start a project → Learn missing pieces
 Now learn the rest by building
-I now have enough foundation to start a real project
+I now have enough foundations to start a real project
+
+6. Custom sql query
+
+✔ You define method name in repository interface
+✔ Spring reads the method name
+✔ Spring generates a query (JPQL/SQL)
+✔ Spring executes it automatically
+
+List<Customer> findByNameContaining(String keyword);
+
+Spring parses method:
+findBy + Name + Containing
+
+Spring builds JPQL(object-based query):
+SELECT c FROM Customer c WHERE c.name LIKE %:keyword%
+Since here Customer is still Java class(not table name).
+
+→ Hibernate converts JPQL → SQL
+
+SELECT * FROM customer WHERE name LIKE '%mm%';
+
+Method name → JPQL → SQL → result
+
+My Repository will now have the method
+
+

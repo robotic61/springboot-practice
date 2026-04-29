@@ -3,6 +3,8 @@ package com.forthems.ftnlabel.repository;
 import com.forthems.ftnlabel.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /*
 Right now we have table but:
 
@@ -28,6 +30,16 @@ Spring sees it
 Spring builds the real class for you
  */
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
+
+    List<Customer> findByNameContaining(String word); // Find name containing "mm" like "%mm%"
+
+    List<Customer> findByNameStartingWith(String word);  // Find name starting with "word"
+
+    List<Customer> findByNameEndingWith(String word); // Find name ending with "word"
+
+    List<Customer> findByNameContainingAndEmailContaining(String name, String email);
+    // Combine conditions
+    // Find name containing "name" amd email containing "email".
 }
     // JpaRepository<Entity, IdType>
     // this repository works with the Customer table and

@@ -20,6 +20,11 @@ email
 @Entity // Create a table
 
 /*
+Entity class defines table structure
+Hibernate creates/updates table based on ddl-auto setting
+ */
+
+/*
 Customer → table "customer"
 id → column "id"
 name → column "name"
