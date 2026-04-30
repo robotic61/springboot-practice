@@ -3,6 +3,7 @@ package com.forthems.ftnlabel.service;
 import com.forthems.ftnlabel.model.Customer;
 import com.forthems.ftnlabel.repository.CustomerRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -252,6 +253,23 @@ public class CustomerService {
     ✔ It commits if success, rolls back if failure
     ✔ Required for custom update/delete operations
      */
+
+    public List<Customer> searchByNameContainsSql(String word) {
+        return customerRepository.seachByNameContainsSql(word);
+    }
+
+    public List<Customer> searchByNameSql(String word) {
+        return customerRepository.findByNameSql(word);
+    }
+
+
+    public List<Customer> findAgeGreater(int age) {
+        return customerRepository.findAgeGreater(age);
+    }
+
+    public List<Customer> findNameLikeAndAgeGreater(String word, int age) {
+        return customerRepository.findNameLikeAndAgeGreater(word,age);
+    }
 
 
 

@@ -3,6 +3,7 @@ package com.forthems.ftnlabel.controller;
 
 import com.forthems.ftnlabel.model.Customer;
 import com.forthems.ftnlabel.service.CustomerService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -234,6 +235,31 @@ public class CustomerController {
     | `deleteByName()` | derived/custom | ❗ may need @Transactional |
 
      */
+
+    @GetMapping("/customers/namecontainssql")
+    public List<Customer> searchByNameContainsSql(@RequestParam String word) {
+        // “Get the value of a query parameter named "word" and put it into this variable”
+        return customerService.searchByNameContainsSql(word);
+    }
+
+    @GetMapping("/customers/namesql")
+    public List<Customer> searchnamesql(@RequestParam String word) {
+        return customerService.searchByNameSql(word);
+    }
+
+    @GetMapping("/customers/agegreatersql")
+    public List<Customer> findAgeGreater(@RequestParam int age) {
+        return customerService.findAgeGreater(age);
+    }
+
+    @GetMapping("/customers/namelikeandagegreatersql")
+    public List<Customer> findNameLikeAndAgeGreater(@RequestParam String word, @RequestParam int age) {
+        return customerService.findNameLikeAndAgeGreater(word, age);
+    }
+
+    // How to call:
+    // http://localhost:8080/customers/search?word=yo&age=18
+
 }
 
 

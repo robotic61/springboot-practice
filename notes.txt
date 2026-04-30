@@ -104,7 +104,7 @@ Foundation → Start a project → Learn missing pieces
 Now learn the rest by building
 I now have enough foundations to start a real project
 
-6. Custom sql query
+6. Method naming using JPArepository
 
 Method naming = always gives full entity
 
@@ -209,3 +209,109 @@ Annotation
 
 
 @RequestParam = value from ?key=value in URL
+
+7. Custom SQL queries using @Query
+
+Method naming → simple queries
+@Query → complex / custom queries
+
+✔ Simple: findByName → OK
+❌ Complex logic → not OK
+❌ JOIN → not OK
+❌ SELECT specific fields → not OK
+❌ GROUP BY / aggregation → not OK
+
+🔥 Key difference
+
+| JPQL                 | Native SQL          |
+| -------------------- | ------------------- |
+| Uses Java objects    | Uses real DB tables |
+| Database-independent | Database-specific   |
+| Safer & cleaner      | More powerful       |
+| Preferred            | Use when needed     |
+
+Use @Query (JPQL) by default
+Use native SQL only when needed
+
+JPQL → works with Java objects (entities)
+SQL  → works with database tables
+
+✔ Yes — real SQL does NOT use :name
+✔ It gets replaced before reaching the database
+
+
+SELECT * FROM customer WHERE name = :name;
+
+👉 Then Spring replaces:
+:name → "Temmy"
+
+👉 Final executed query:
+SELECT * FROM customer WHERE name = 'Temmy';
+
+:name → Spring replaces → ? → Database gets real value
+1️⃣ JPQL (default @Query)
+@Query("SELECT c FROM Customer c WHERE c.name = :name")
+
+👉 Uses:
+Customer → Java class (Entity)
+c.name   → Java field
+
+2️⃣ Native SQL
+@Query(value = "SELECT * FROM customer WHERE name = :name", nativeQuery = true)
+
+👉 Uses:
+customer → database table
+name     → database column
+
+🔥 Key conceptual difference
+🟢 JPQL
+Think in Java objects
+Example:
+Customer has field "name"
+
+🔵 SQL
+Think in database structure
+Example:
+Table "customer" has column "name"
+
+🔥 Another example (VERY IMPORTANT)
+Entity:
+
+@Entity
+@Table(name = "customer_table")
+public class Customer {
+    private String name;
+}
+
+JPQL:
+@Query("SELECT c FROM Customer c")
+
+👉 Still uses:
+Customer (NOT customer_table)
+👉 Because:
+JPQL ignores table name — uses entity class
+
+Native SQL:
+@Query(value = "SELECT * FROM customer_table", nativeQuery = true)
+
+👉 Uses:
+Table name
+
+🧠 Clean rule (use this)
+
+Simple query → method naming
+Anything custom → native SQL
+
+🔥 Example (clean design)
+
+// SIMPLE
+List<Customer> findByName(String name);
+
+// SQL PRACTICE / COMPLEX
+@Query(value = "SELECT * FROM customer WHERE name LIKE %:word%", nativeQuery = true)
+List<Customer> searchByNameSql(String word);
+
+Template:
+
+@Query(value = "YOUR_SQL_HERE", nativeQuery = true)
+ReturnType methodName(@Param("paramName") Type param);
