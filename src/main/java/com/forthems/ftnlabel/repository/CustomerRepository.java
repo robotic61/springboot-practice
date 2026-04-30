@@ -1,7 +1,9 @@
 package com.forthems.ftnlabel.repository;
 
 import com.forthems.ftnlabel.model.Customer;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -299,12 +301,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 //    @Query(value = "SELECT * FROM customer WHERE age > :age AND name LIKE CONCAT('%', :word, '%')", nativeQuery = true)
 //    List<Customer> findNameLikeAndAgeGreater(@Param("word") String word, @Param("age") int age);
 
-
-
-
-
-
-
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM customer WHERE name = :name", nativeQuery = true)
+    void deleteByNameSql(@Param("name") String name);
 }
     // JpaRepository<Entity, IdType>
     // this repository works with the Customer table and

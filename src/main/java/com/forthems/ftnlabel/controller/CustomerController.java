@@ -260,6 +260,11 @@ public class CustomerController {
     // How to call:
     // http://localhost:8080/customers/search?word=yo&age=18
 
+    @DeleteMapping("/customers/deletebynamesql")
+    public void deleteByNameSql(@RequestParam String name) {
+        customerService.deleteByNameSql(name);
+    }
+
 }
 
 

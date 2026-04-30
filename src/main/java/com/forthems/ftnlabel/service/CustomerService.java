@@ -271,6 +271,10 @@ public class CustomerService {
         return customerRepository.findNameLikeAndAgeGreater(word,age);
     }
 
+    public void deleteByNameSql(String name) {
+        customerRepository.deleteByNameSql(name);
+    }
+
 
 
 }
